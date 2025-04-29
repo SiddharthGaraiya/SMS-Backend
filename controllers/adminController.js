@@ -66,3 +66,19 @@ exports.deleteAdmin = (req, res) => {
         });
     });
 };
+
+exports.getAdminByUserId = (req, res) => {
+    const { user_id } = req.params;
+
+    const query = 'SELECT * FROM admins WHERE user_id = ?';
+
+    db.query(query, [user_id], (err, result) => {
+        if (err) {
+            return res.status(500).send('Error fetching admin');
+        }
+        if (result.length === 0) {
+            return res.status(404).send('admin not found');
+        }
+        res.json(result[0]); 
+    });
+};
